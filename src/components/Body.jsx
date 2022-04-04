@@ -8,11 +8,11 @@ import PageNotFound from "../pages/PageNotFound";
 import useStore from "../Store";
 
 function Body() {
-  const currentUser = useStore((state) => state.currentUser);
+  const isInGame = useStore((state) => state.isInGame);
 
   return (
     <Routes>
-      {!currentUser ? (
+      {!isInGame ? (
         <>
           <Route path={"/"} element={<Login />} />
           {PAGES.map((page, key) => (

@@ -1,0 +1,24 @@
+.gridEmpty,
+.gridX,
+.gridO {
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.gridEmpty {
+  background-image: url("/src/images/empty.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.gridX {
+  background-image: url("/src/images/x.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.gridO {
+  background-image: url("/src/images/o.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+}

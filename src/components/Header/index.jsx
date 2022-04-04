@@ -7,7 +7,7 @@ const Header = () => {
   return (
     <div className={styles.header}>
       <div className={styles.left}>
-        <h1 className={styles.title}>React App</h1>
+        <div className={styles.title}></div>
       </div>
       <div className={styles.right}>
         <Menu />
