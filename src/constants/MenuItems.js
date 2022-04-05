@@ -1,13 +1,13 @@
-import { HOME, PAGE_NOT_FOUND } from "./Pages";
+import { HOME, PLAY } from "./Pages";
 
 const Home = {
   text: "Home",
   path: HOME.path,
 };
 
-const Other = {
-  text: "Other",
-  path: PAGE_NOT_FOUND.path,
+const Play = {
+  text: "Play",
+  path: PLAY.path,
 };
 
-export const MENU_ITEMS = [Home, Other];
+export const MENU_ITEMS = [Home, Play];
