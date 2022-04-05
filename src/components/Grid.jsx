@@ -4,13 +4,12 @@ import { useState } from "react";
 import useStore from "../Store";
 import * as styles from "./css/Grid.module.css";
 
-function Home() {
+function Grid({ gridNumber, handlePlay }) {
   const EMPTY = "empty";
   const X = "x";
   const O = "o";
 
   const currentPlayer = useStore((state) => state.currentPlayer);
-  const setCurrentPlayer = useStore((state) => state.setCurrentPlayer);
   const [gridState, setGridState] = useState(EMPTY);
 
   const handleClick = () => {
@@ -19,12 +18,11 @@ function Home() {
     }
     if (currentPlayer === X) {
       setGridState(X);
-      setCurrentPlayer(O);
     }
     if (currentPlayer === O) {
       setGridState(O);
-      setCurrentPlayer(X);
     }
+    handlePlay(gridNumber);
   };
 
   return (
@@ -37,9 +35,8 @@ function Home() {
           : styles.gridO
       }
       onClick={() => handleClick()}
-      alt=""
     ></div>
   );
 }
 
-export default Home;
+export default Grid;
