@@ -7,21 +7,22 @@ export function createGame(game) {
     .then((snapshot) => {
       if (snapshot.exists()) {
         return "Game already exists";
+      } else {
+        set(ref(database, "games/" + game.id), game);
       }
     })
     .catch((error) => {
       console.error(error);
     });
-  set(ref(database, "games/" + game.id), game);
 }
 
 export function getGame(id) {
-  get(child(ref(database), `games/${id}`))
+  return get(child(ref(database), `games/${id}`))
     .then((snapshot) => {
       if (snapshot.exists()) {
         return snapshot.val();
       } else {
-        return "No data available";
+        return "Game not found";
       }
     })
     .catch((error) => {

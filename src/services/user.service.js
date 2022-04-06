@@ -7,12 +7,13 @@ export function createUser(user) {
     .then((snapshot) => {
       if (snapshot.exists()) {
         return "User already exists";
+      } else {
+        set(ref(database, "users/" + user.id), user);
       }
     })
     .catch((error) => {
       console.error(error);
     });
-  set(ref(database, "users/" + user.id), user);
 }
 
 export function getUser(id) {

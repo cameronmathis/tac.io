@@ -1,6 +1,5 @@
 export function User() {
-  this.email = "";
-  this.id = "";
-  this.name = "";
-  this.score = "";
+  this.email = null;
+  this.id = null;
+  this.name = null;
 }
