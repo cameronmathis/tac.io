@@ -1,7 +1,7 @@
 import create from "zustand";
 
 const useStore = create((set) => ({
-  currentPath: "/home",
+  currentPath: "/",
   setCurrentPath: (path) => set(() => ({ currentPath: path })),
 
   isMobile: null,
