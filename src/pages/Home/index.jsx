@@ -1,5 +1,6 @@
 import Button from "@mui/material/Button";
-import React from "react";
+import TextField from "@mui/material/TextField";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -9,21 +10,32 @@ import * as GameDataService from "../../services/game.service";
 import useStore from "../../Store";
 import * as styles from "./css/index.module.css";
 
+// TODO: address console warnings
 function Home() {
   const currentUser = useStore((state) => state.currentUser);
-  const setCurrentGame = useStore((state) => state.setCurrentGame);
+  const currentGameId = useStore((state) => state.currentGameId);
+  const setCurrentGameId = useStore((state) => state.setCurrentGameId);
   const setCurrentPath = useStore((state) => state.setCurrentPath);
-  // TODO: update game code based off UI input
-  const [gameCode, setGameCode] = useState("c97ee");
+  const [gameCode, setGameCode] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setGameCode(currentGameId);
+  }, [currentGameId]);
+
+  const handleChange = (event) => {
+    setGameCode(event.target.value);
+  };
 
   const handleJoinGame = () => {
     GameDataService.getGame(gameCode).then((game) => {
       if (game === "Game not found") {
+        // TODO: add snackbar for game not found
         console.log("Game not found");
         return;
       }
       if (!game.isActive) {
+        // TODO: add snackbar for game is not active
         console.log("Game is not currently active");
         return;
       }
@@ -31,20 +43,22 @@ function Home() {
         game.player1.id === currentUser.id ||
         game.player2.id === currentUser.id
       ) {
-        setCurrentGame(game.id);
+        setCurrentGameId(game.id);
         navigate(PLAY.path);
         setCurrentPath(PLAY.path);
         return;
       } else if (game.player2.id !== undefined) {
+        // TODO: add snackbar for game already has two players
         console.log("Game already has two players");
         return;
       }
       game.player2.id = currentUser.id;
       game.player2.name = currentUser.name;
       GameDataService.patchGame(game);
-      setCurrentGame(game.id);
+      setCurrentGameId(game.id);
       navigate(PLAY.path);
       setCurrentPath(PLAY.path);
+      // TODO: add snackbar to show game code
     });
   };
 
@@ -54,26 +68,34 @@ function Home() {
     game.player1.id = currentUser.id;
     game.player1.name = currentUser.name;
     GameDataService.createGame(game);
-    setCurrentGame(game.id);
+    setCurrentGameId(game.id);
     navigate(PLAY.path);
     setCurrentPath(PLAY.path);
   };
 
-  // TODO: add input for game code
+  // TODO: style text field
   return (
     <div className={styles.container}>
       <div className={styles.body}>
+        <TextField
+          className={styles.textField}
+          id="outlined-search"
+          label="Game Code"
+          type="search"
+          value={gameCode}
+          onChange={handleChange}
+        />
         <Button
           className={styles.button}
           variant="outlined"
-          onClick={() => handleJoinGame()}
+          onClick={handleJoinGame}
         >
           Join Game
         </Button>
         <Button
           className={styles.button}
           variant="outlined"
-          onClick={() => handleCreateGame()}
+          onClick={handleCreateGame}
         >
           Create Game
         </Button>

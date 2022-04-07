@@ -9,7 +9,7 @@ import useStore from "../Store";
 
 function Body() {
   const currentUser = useStore((state) => state.currentUser);
-  const currentGame = useStore((state) => state.currentGame);
+  const currentGameId = useStore((state) => state.currentGameId);
 
   return (
     <Routes>
@@ -22,7 +22,7 @@ function Body() {
         </>
       ) : (
         <>
-          {!currentGame ? (
+          {!currentGameId ? (
             <>
               <Route path={"/"} element={<Home />} />
               {PAGES.map((page, key) => (

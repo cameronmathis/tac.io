@@ -4,6 +4,7 @@
   background-size: contain;
   width: 80vh;
   aspect-ratio: 1 / 1;
+  margin: 5vw;
   display: grid;
   grid-template: repeat(3, 1fr) / repeat(3, 1fr);
 }
