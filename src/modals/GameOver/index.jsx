@@ -12,19 +12,19 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
+  bgcolor: "white",
+  border: "2px solid red",
   p: 4,
 };
 
-const GameOverModal = ({ isOpen, setIsOpen, gameResult }) => {
+// TODO: style modal
+const GameOverModal = ({ isOpen, closeModal, gameResult }) => {
   const TIE = "tie";
   const WON = "won";
   const LOST = "LOST";
 
   const handleClose = () => {
-    setIsOpen(false);
+    closeModal();
   };
 
   const getModalText = () => {
@@ -41,25 +41,21 @@ const GameOverModal = ({ isOpen, setIsOpen, gameResult }) => {
   };
 
   return (
-    <div>
-      <Modal open={isOpen} onClose={handleClose}>
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            Game Over
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {getModalText}
-          </Typography>
-          <Button
-            className={styles.button}
-            variant="outlined"
-            onClick={handleClose}
-          >
-            Dismiss
-          </Button>
-        </Box>
-      </Modal>
-    </div>
+    <Modal open={isOpen} onClose={handleClose}>
+      <Box sx={style}>
+        <Typography variant="h6" component="h2">
+          Game Over
+        </Typography>
+        <Typography sx={{ mt: 2 }}>{getModalText()}</Typography>
+        <Button
+          className={styles.button}
+          variant="outlined"
+          onClick={handleClose}
+        >
+          Dismiss
+        </Button>
+      </Box>
+    </Modal>
   );
 };
 

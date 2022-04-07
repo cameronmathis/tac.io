@@ -1,15 +1,14 @@
 import { onValue, ref } from "firebase/database";
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { database } from "../firebase";
-import GameOverModal from "../modals/GameOver";
 import { Game } from "../models/Game";
 import * as GameDataService from "../services/game.service";
+import ErrorSnackbar from "../snackbars/Error";
 import useStore from "../Store";
 import * as styles from "./css/Grid.module.css";
 
-function Grid({ gridNumber }) {
+function Grid({ gridNumber, handleGameOver }) {
   const gridY = Math.floor(gridNumber / 3);
   const gridX = gridNumber % 3;
   const EMPTY = "empty";
@@ -22,8 +21,8 @@ function Grid({ gridNumber }) {
   const currentUser = useStore((state) => state.currentUser);
   const currentGameId = useStore((state) => state.currentGameId);
   const [game, setGame] = useState(new Game());
-  const [gameResult, setGameResult] = useState("");
-  const [isGameOverModalOpen, setIsGameOverModalOpen] = useState(false);
+  const [isErrorSnackbarOpen, setIsErrorSnackbarOpen] = useState(false);
+  const [errorSnackbarMessage, setErrorSnackbarMessage] = useState("");
 
   useEffect(() => {
     const gameRef = ref(database, "games/" + currentGameId);
@@ -38,13 +37,13 @@ function Grid({ gridNumber }) {
   }, [currentGameId]);
 
   // Check if it is the logged in user's turn
-  function isUsersTurn() {
+  const isUsersTurn = () => {
     const currentUsersTurn = game[game.currentPlayer].id;
     return currentUsersTurn === currentUser.id;
-  }
+  };
 
   // Mark the board with the appropriate symbol
-  function markBoard() {
+  const markBoard = () => {
     const y = Math.floor(gridNumber / 3);
     const x = gridNumber % 3;
 
@@ -58,10 +57,10 @@ function Grid({ gridNumber }) {
       };
       GameDataService.patchGame(updatedGame);
     }
-  }
+  };
 
   // Update which players turn it is
-  function updatePlayerTurn() {
+  const updatePlayerTurn = () => {
     let newPlayer = null;
     if (game.currentPlayer === PLAYER1) {
       newPlayer = PLAYER2;
@@ -75,10 +74,10 @@ function Grid({ gridNumber }) {
       currentPlayer: newPlayer,
     };
     GameDataService.patchGame(updatedGame);
-  }
+  };
 
   // Return winner if one exists
-  function getWinner() {
+  const getWinner = () => {
     // Check horizontals
     for (let row in game.board) {
       let set = new Set(game.board[row]);
@@ -119,21 +118,10 @@ function Grid({ gridNumber }) {
       }
     }
     return TIE;
-  }
-
-  // TODO: add modal game over
-  function handleGameOver(gameResult) {
-    let updatedGame = {
-      id: currentGameId,
-      isActive: false,
-    };
-    GameDataService.patchGame(updatedGame);
-    setGameResult(gameResult);
-    setIsGameOverModalOpen(true);
-  }
+  };
 
   // Check if the logged in user won
-  function didUserWin() {
+  const didUserWin = () => {
     const winner = getWinner();
     if (winner === TIE) {
       handleGameOver(TIE);
@@ -153,7 +141,7 @@ function Grid({ gridNumber }) {
         handleGameOver(LOST);
       }
     }
-  }
+  };
 
   const handleClick = () => {
     if (isUsersTurn()) {
@@ -161,22 +149,29 @@ function Grid({ gridNumber }) {
       updatePlayerTurn();
       didUserWin();
     } else {
-      // TODO: add snackbar for playing out of turn
-      console.log("Not your turn");
+      setErrorSnackbarMessage("Not your turn");
+      setIsErrorSnackbarOpen(true);
     }
   };
 
   return (
-    <div
-      className={
-        game.board[gridY][gridX] === EMPTY
-          ? styles.gridEmpty
-          : game.board[gridY][gridX] === PLAYER1
-          ? styles.gridO
-          : styles.gridX
-      }
-      onClick={() => handleClick()}
-    ></div>
+    <>
+      <div
+        className={
+          game.board[gridY][gridX] === EMPTY
+            ? styles.gridEmpty
+            : game.board[gridY][gridX] === PLAYER1
+            ? styles.gridO
+            : styles.gridX
+        }
+        onClick={() => handleClick()}
+      ></div>
+      <ErrorSnackbar
+        isOpen={isErrorSnackbarOpen}
+        closeSnackbar={setIsErrorSnackbarOpen}
+        message={errorSnackbarMessage}
+      ></ErrorSnackbar>
+    </>
   );
 }
 

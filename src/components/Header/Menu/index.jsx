@@ -18,8 +18,8 @@ const Menu = () => {
 
   const handleClick = (item) => {
     if (currentPath !== item.path) {
-      navigate(item.path);
       setCurrentPath(item.path);
+      navigate(item.path);
     }
   };
 
