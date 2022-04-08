@@ -13,6 +13,8 @@ import * as styles from "./css/index.module.css";
 import "./css/index.css";
 
 function Home() {
+  const GAME_CODE_LENGTH = 5;
+
   const currentUser = useStore((state) => state.currentUser);
   const currentGameId = useStore((state) => state.currentGameId);
   const setCurrentGameId = useStore((state) => state.setCurrentGameId);
@@ -27,7 +29,7 @@ function Home() {
   }, [currentGameId]);
 
   const handleChange = (event) => {
-    setGameCode(event.target.value);
+    setGameCode(event.target.value.trim());
   };
 
   const loadGame = (game) => {
@@ -37,6 +39,11 @@ function Home() {
   };
 
   const handleJoinGame = () => {
+    if (gameCode.length !== GAME_CODE_LENGTH) {
+      setErrorSnackbarMessage("Invalid game code");
+      setIsErrorSnackbarOpen(true);
+      return;
+    }
     GameDataService.getGame(gameCode).then((game) => {
       if (game === "Game not found") {
         setErrorSnackbarMessage("Game not found");

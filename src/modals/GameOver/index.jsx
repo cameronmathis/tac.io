@@ -13,14 +13,10 @@ const style = {
   p: 4,
 };
 
-const GameOverModal = ({ isOpen, closeModal, gameResult }) => {
+const GameOverModal = ({ isOpen, newGame, endGame, gameResult }) => {
   const TIE = "tie";
   const WON = "won";
   const LOST = "lost";
-
-  const handleClose = () => {
-    closeModal();
-  };
 
   const getModalMessage = () => {
     if (gameResult === TIE) {
@@ -36,18 +32,27 @@ const GameOverModal = ({ isOpen, closeModal, gameResult }) => {
   };
 
   return (
-    <Modal className={styles.module} open={isOpen} onClose={handleClose}>
+    <Modal className={styles.module} open={isOpen}>
       <Box className={styles.box} sx={style}>
         <div className={styles.body}>
           <h2 className={styles.header}>Game Over</h2>
           <p className={styles.message}>{getModalMessage()}</p>
-          <Button
-            className={styles.button}
-            variant="outlined"
-            onClick={handleClose}
-          >
-            Dismiss
-          </Button>
+          <div className={styles.buttons}>
+            <Button
+              className={styles.button}
+              variant="outlined"
+              onClick={newGame}
+            >
+              New Game
+            </Button>
+            <Button
+              className={styles.button}
+              variant="outlined"
+              onClick={endGame}
+            >
+              End Game
+            </Button>
+          </div>
         </div>
       </Box>
     </Modal>

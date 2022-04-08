@@ -1,6 +1,7 @@
 .box {
-  width: 350px;
+  width: 500px;
   background-color: var(--clr-background);
+  border-radius: 10px;
   border: 2px solid var(--clr-dark);
 }
 
@@ -20,6 +21,10 @@
 
 .message {
   font-size: 25px;
+}
+
+.buttons {
+  display: flex;
 }
 
 .button {
