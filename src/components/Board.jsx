@@ -106,7 +106,6 @@ function Board() {
   // Check if the logged in user won
   const didUserWin = () => {
     const winner = getWinner();
-    console.log(winner);
     if (winner === TIE) {
       handleGameOver(TIE);
       return;
