@@ -10,6 +10,8 @@ import ErrorSnackbar from "../../snackbars/Error";
 import useStore from "../../Store";
 import * as styles from "./css/index.module.css";
 
+import "./css/index.css";
+
 function Home() {
   const currentUser = useStore((state) => state.currentUser);
   const currentGameId = useStore((state) => state.currentGameId);
@@ -28,6 +30,12 @@ function Home() {
     setGameCode(event.target.value);
   };
 
+  const loadGame = (game) => {
+    setCurrentGameId(game.id);
+    setCurrentPath(PLAY.path);
+    navigate(PLAY.path);
+  };
+
   const handleJoinGame = () => {
     GameDataService.getGame(gameCode).then((game) => {
       if (game === "Game not found") {
@@ -44,9 +52,7 @@ function Home() {
         game.player1.id === currentUser.id ||
         game.player2.id === currentUser.id
       ) {
-        setCurrentGameId(game.id);
-        setCurrentPath(PLAY.path);
-        navigate(PLAY.path);
+        loadGame(game);
         return;
       } else if (game.player2.id !== undefined) {
         setErrorSnackbarMessage("Game already has two players");
@@ -56,9 +62,7 @@ function Home() {
       game.player2.id = currentUser.id;
       game.player2.name = currentUser.name;
       GameDataService.patchGame(game);
-      setCurrentGameId(game.id);
-      setCurrentPath(PLAY.path);
-      navigate(PLAY.path);
+      loadGame(game);
     });
   };
 
@@ -68,21 +72,17 @@ function Home() {
     game.player1.id = currentUser.id;
     game.player1.name = currentUser.name;
     GameDataService.createGame(game);
-    setCurrentGameId(game.id);
-    setCurrentPath(PLAY.path);
-    navigate(PLAY.path);
+    loadGame(game);
   };
 
-  // TODO: style text field
   return (
     <>
       <div className={styles.container}>
         <div className={styles.body}>
           <TextField
             className={styles.textField}
-            id="outlined-search"
+            id="filled-hidden-label-small"
             label="Game Code"
-            type="search"
             value={gameCode}
             onChange={handleChange}
           />

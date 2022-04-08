@@ -6,9 +6,7 @@ import React from "react";
 import useStore from "../../Store";
 import * as styles from "./css/index.module.css";
 
-// TODO: style snackbar
 const GameCodeSnackbar = ({ isOpen, closeSnackbar }) => {
-  const SNACKBAR_POSITION = { vertical: "top", horizontal: "center" };
   const SNACKBAR_DURATION = 5000;
 
   const currentGameId = useStore((state) => state.currentGameId);
@@ -42,7 +40,6 @@ const GameCodeSnackbar = ({ isOpen, closeSnackbar }) => {
     <Snackbar
       class={styles.snackbar}
       open={isOpen}
-      anchorOrigin={SNACKBAR_POSITION}
       autoHideDuration={SNACKBAR_DURATION}
       onClose={handleClose}
       message={getMessage()}

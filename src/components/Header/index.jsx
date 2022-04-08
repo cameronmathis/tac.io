@@ -3,7 +3,6 @@ import React from "react";
 import * as styles from "./css/index.module.css";
 import Menu from "./Menu";
 
-// TODO: make title image centered when resizing
 const Header = () => {
   return (
     <div className={styles.header}>

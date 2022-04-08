@@ -10,6 +10,7 @@
 
 .title {
   background-image: url("/src/images/title.png");
+  background-position: center left;
   background-repeat: no-repeat;
   background-size: contain;
   height: 100%;

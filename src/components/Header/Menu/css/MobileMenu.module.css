@@ -6,24 +6,15 @@
   transition: height 3s ease;
 }
 
-.menuIcon {
+.menuButton {
   width: auto;
   height: 50px;
 }
 
-.expandedIcon,
-.closedIcon {
+.menuIcon {
   z-index: 1;
   transition: 100ms;
   color: var(--clr-primary);
-}
-
-.expandedIcon {
-  transform: rotate(90deg);
-}
-
-.closedIcon {
-  transform: rotate(0deg);
 }
 
 .drawer {
@@ -45,9 +36,9 @@
 
 .link {
   font-weight: bold;
-  color: var(--txt-dark);
+  color: var(--clr-dark);
 }
 
 .linkSelected {
-  color: var(--txt-primary);
+  color: var(--clr-primary);
 }

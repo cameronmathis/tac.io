@@ -1,7 +1,6 @@
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import Typography from "@mui/material/Typography";
 import React from "react";
 
 import * as styles from "./css/index.module.css";
@@ -11,23 +10,19 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
-  bgcolor: "white",
-  border: "2px solid red",
   p: 4,
 };
 
-// TODO: style modal
 const GameOverModal = ({ isOpen, closeModal, gameResult }) => {
   const TIE = "tie";
   const WON = "won";
-  const LOST = "LOST";
+  const LOST = "lost";
 
   const handleClose = () => {
     closeModal();
   };
 
-  const getModalText = () => {
+  const getModalMessage = () => {
     if (gameResult === TIE) {
       return "You tied.";
     }
@@ -41,19 +36,19 @@ const GameOverModal = ({ isOpen, closeModal, gameResult }) => {
   };
 
   return (
-    <Modal open={isOpen} onClose={handleClose}>
-      <Box sx={style}>
-        <Typography variant="h6" component="h2">
-          Game Over
-        </Typography>
-        <Typography sx={{ mt: 2 }}>{getModalText()}</Typography>
-        <Button
-          className={styles.button}
-          variant="outlined"
-          onClick={handleClose}
-        >
-          Dismiss
-        </Button>
+    <Modal className={styles.module} open={isOpen} onClose={handleClose}>
+      <Box className={styles.box} sx={style}>
+        <div className={styles.body}>
+          <h2 className={styles.header}>Game Over</h2>
+          <p className={styles.message}>{getModalMessage()}</p>
+          <Button
+            className={styles.button}
+            variant="outlined"
+            onClick={handleClose}
+          >
+            Dismiss
+          </Button>
+        </div>
       </Box>
     </Modal>
   );

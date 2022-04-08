@@ -3,15 +3,10 @@ import IconButton from "@mui/material/IconButton";
 import Snackbar from "@mui/material/Snackbar";
 import React from "react";
 
-import useStore from "../../Store";
 import * as styles from "./css/index.module.css";
 
-// TODO: style snackbar
 const ErrorSnackbar = ({ isOpen, closeSnackbar, message }) => {
-  const SNACKBAR_POSITION = { vertical: "top", horizontal: "center" };
   const SNACKBAR_DURATION = 5000;
-
-  const currentGameId = useStore((state) => state.currentGameId);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -38,7 +33,6 @@ const ErrorSnackbar = ({ isOpen, closeSnackbar, message }) => {
     <Snackbar
       class={styles.snackbar}
       open={isOpen}
-      anchorOrigin={SNACKBAR_POSITION}
       autoHideDuration={SNACKBAR_DURATION}
       onClose={handleClose}
       message={message}

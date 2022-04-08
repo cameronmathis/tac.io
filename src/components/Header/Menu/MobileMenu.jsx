@@ -5,7 +5,6 @@ import React, { useState } from "react";
 import useStore from "../../../Store";
 import * as styles from "./css/MobileMenu.module.css";
 
-// TODO: change background color to transparent
 const MobileMenu = ({ menuItems, getRandomKey, handleClick }) => {
   const currentPath = useStore((state) => state.currentPath);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -21,10 +20,8 @@ const MobileMenu = ({ menuItems, getRandomKey, handleClick }) => {
 
   return (
     <div className={styles.menu}>
-      <Button className={styles.menuIcon} onClick={handleExpand}>
-        <MenuIcon
-          className={isExpanded ? styles.expandedIcon : styles.closedIcon}
-        />
+      <Button className={styles.menuButton} onClick={handleExpand}>
+        <MenuIcon className={styles.menuIcon} />
       </Button>
       <Drawer
         anchor={"right"}

@@ -15,13 +15,26 @@
   justify-content: center;
 }
 
-.button,
-.textField {
+.message {
+  margin: 10px;
+}
+
+.textField > div,
+.button {
   height: 50px;
   width: 200px;
   border-radius: 10px;
   margin: 10px;
   color: var(--clr-dark);
+}
+
+.textField > label {
+  top: 12%;
+  left: 3.7%;
+}
+
+.textField > div > fieldset {
+  border: 1px solid var(--clr-dark);
 }
 
 .button:hover {

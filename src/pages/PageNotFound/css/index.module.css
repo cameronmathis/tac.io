@@ -8,7 +8,7 @@
 
 .body {
   background-color: var(--clr-background);
-  color: var(--txt-dark);
+  color: var(--clr-dark);
   padding: 25px;
   width: min-content;
   height: min-content;

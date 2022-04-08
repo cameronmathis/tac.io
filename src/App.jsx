@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { HashRouter as Router } from "react-router-dom";
 
 import Body from "./components/Body";
@@ -9,10 +9,14 @@ import useStore from "./Store";
 
 function App() {
   const setIsMobile = useStore((state) => state.setIsMobile);
+  const [showFooter, setShowFooter] = useState(true);
 
   useEffect(() => {
     window.addEventListener("resize", () =>
       setIsMobile(window.innerWidth < 765)
+    );
+    window.addEventListener("resize", () =>
+      setShowFooter(window.innerHeight > 750)
     );
   }, [setIsMobile]);
 
@@ -21,7 +25,7 @@ function App() {
       <Router>
         <Header />
         <Body />
-        <Footer />
+        {showFooter ? <Footer /> : <div className={styles.footer} />}
       </Router>
     </div>
   );

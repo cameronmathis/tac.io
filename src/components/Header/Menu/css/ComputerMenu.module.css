@@ -19,9 +19,9 @@
 
 .link {
   font-weight: bold;
-  color: var(--txt-dark);
+  color: var(--clr-dark);
 }
 
 .linkSelected {
-  color: var(--txt-primary);
+  color: var(--clr-primary);
 }

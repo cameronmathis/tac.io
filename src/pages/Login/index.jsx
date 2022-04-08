@@ -9,13 +9,17 @@ import * as styles from "./css/index.module.css";
 function Login() {
   const setCurrentUser = useStore((state) => state.setCurrentUser);
 
-  const onSuccess = (res) => {
-    let profile = res.profileObj;
-    profile.tokens = 0;
+  const createUserFromGoogleProfile = (profile) => {
     let user = new User();
     user.email = profile.email;
     user.id = profile.googleId;
     user.name = profile.givenName;
+    return user;
+  };
+
+  const onSuccess = (res) => {
+    let profile = res.profileObj;
+    let user = createUserFromGoogleProfile(profile);
     UserDataService.patchUser(user);
     setCurrentUser(user);
   };
