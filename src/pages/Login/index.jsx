@@ -33,7 +33,7 @@ function Login() {
         onSuccess={onSuccess}
         cookiePolicy={"single_host_origin"}
         isSignedIn={true}
-      ></GoogleLogin>
+      />
     </div>
   );
 }

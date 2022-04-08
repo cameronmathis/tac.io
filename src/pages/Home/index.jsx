@@ -106,7 +106,7 @@ function Home() {
         isOpen={isErrorSnackbarOpen}
         closeSnackbar={setIsErrorSnackbarOpen}
         message={errorSnackbarMessage}
-      ></ErrorSnackbar>
+      />
     </>
   );
 }

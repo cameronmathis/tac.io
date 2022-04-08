@@ -165,12 +165,12 @@ function Grid({ gridNumber, handleGameOver }) {
             : styles.gridX
         }
         onClick={() => handleClick()}
-      ></div>
+      />
       <ErrorSnackbar
         isOpen={isErrorSnackbarOpen}
         closeSnackbar={setIsErrorSnackbarOpen}
         message={errorSnackbarMessage}
-      ></ErrorSnackbar>
+      />
     </>
   );
 }
