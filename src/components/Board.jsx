@@ -2,45 +2,46 @@ import { onValue, ref } from "firebase/database";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { LOST, TIE, WON } from "../constants/GameResults";
 import { HOME } from "../constants/Pages";
+import { EMPTY, PLAYER1, PLAYER2 } from "../constants/Players";
 import { database } from "../firebase";
 import GameOverModal from "../modals/GameOver";
 import { Game } from "../models/Game";
 import { GameBoard } from "../models/GameBoard";
 import * as GameDataService from "../services/game.service";
+import ErrorSnackbar from "../snackbars/Error";
 import useStore from "../Store";
 import * as styles from "./css/Board.module.css";
 import Grid from "./Grid";
 
 function Board() {
-  const EMPTY = "empty";
-  const PLAYER1 = "player1";
-  const PLAYER2 = "player2";
-  const TIE = "tie";
-  const WON = "won";
-  const LOST = "lost";
-
   const currentGameId = useStore((state) => state.currentGameId);
   const setCurrentGameId = useStore((state) => state.setCurrentGameId);
   const currentUser = useStore((state) => state.currentUser);
   const setCurrentPath = useStore((state) => state.setCurrentPath);
   const [game, setGame] = useState(new Game());
+  const [errorSnackbarMessage, setErrorSnackbarMessage] = useState("");
+  const [isErrorSnackbarOpen, setIsErrorSnackbarOpen] = useState(false);
   const [gameResult, setGameResult] = useState("");
   const [isGameOverModalOpen, setIsGameOverModalOpen] = useState(false);
   const navigate = useNavigate();
 
   // TODO: Update users screen if other player wins
+  // TODO: Debug why "isGameOverModalOpen" is always false
   useEffect(() => {
     const gameRef = ref(database, "games/" + currentGameId);
     onValue(gameRef, (snapshot) => {
       if (snapshot.exists()) {
         let data = snapshot.val();
         setGame(data);
-      } else {
-        return "Game not found";
+      } else if (!isGameOverModalOpen) {
+        console.log(!isGameOverModalOpen);
+        setErrorSnackbarMessage("Error loading game");
+        setIsErrorSnackbarOpen(true);
       }
     });
-  }, [currentGameId]);
+  }, [currentGameId, isGameOverModalOpen]);
 
   // Update which players turn it is
   const updatePlayerTurn = () => {
@@ -127,37 +128,44 @@ function Board() {
   };
 
   const handleGameOver = (gameResult) => {
-    let updatedGame = {
-      id: currentGameId,
-      isActive: false,
-    };
+    let updatedGame = null;
+    const winner =
+      gameResult === TIE ? TIE : gameResult === WON ? currentUser.id : null;
+    if (winner !== null) {
+      updatedGame = {
+        id: currentGameId,
+        isActive: false,
+        winner: winner,
+      };
+    } else {
+      updatedGame = {
+        id: currentGameId,
+        isActive: false,
+      };
+    }
     GameDataService.patchGame(updatedGame);
     setGameResult(gameResult);
     setIsGameOverModalOpen(true);
   };
 
   const handlePlay = () => {
-    updatePlayerTurn();
+    if (game.isActive) {
+      updatePlayerTurn();
+    }
     didUserWin();
   };
 
   const handleNewGame = () => {
-    let updatedGame = {
-      id: currentGameId,
-      isActive: true,
-      board: new GameBoard().board,
-    };
+    let updatedGame = game;
+    updatedGame.isActive = true;
+    updatedGame.board = new GameBoard().board;
     GameDataService.patchGame(updatedGame);
     setIsGameOverModalOpen(false);
     setGameResult("");
   };
 
   const handleEndGame = () => {
-    let updatedGame = {
-      id: currentGameId,
-      isActive: false,
-    };
-    GameDataService.patchGame(updatedGame);
+    GameDataService.deleteGame(currentGameId);
     setCurrentGameId(null);
     setIsGameOverModalOpen(false);
     setCurrentPath(HOME.path);
@@ -177,6 +185,11 @@ function Board() {
           />
         ))}
       </div>
+      <ErrorSnackbar
+        isOpen={isErrorSnackbarOpen}
+        closeSnackbar={setIsErrorSnackbarOpen}
+        message={errorSnackbarMessage}
+      />
       <GameOverModal
         isOpen={isGameOverModalOpen}
         newGame={handleNewGame}

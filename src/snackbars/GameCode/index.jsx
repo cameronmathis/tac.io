@@ -38,7 +38,7 @@ const GameCodeSnackbar = ({ isOpen, closeSnackbar }) => {
 
   return (
     <Snackbar
-      class={styles.snackbar}
+      className={styles.snackbar}
       open={isOpen}
       autoHideDuration={SNACKBAR_DURATION}
       onClose={handleClose}

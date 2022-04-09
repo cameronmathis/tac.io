@@ -1,9 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 
+import { PLAYER1, PLAYER2 } from "../constants/Players";
 import { GameBoard } from "./GameBoard";
-
-const PLAYER1 = "player1";
-const PLAYER2 = "player2";
 
 export function Game() {
   this.board = new GameBoard().board;

@@ -20,8 +20,8 @@ function Home() {
   const setCurrentGameId = useStore((state) => state.setCurrentGameId);
   const setCurrentPath = useStore((state) => state.setCurrentPath);
   const [gameCode, setGameCode] = useState("");
-  const [isErrorSnackbarOpen, setIsErrorSnackbarOpen] = useState(false);
   const [errorSnackbarMessage, setErrorSnackbarMessage] = useState("");
+  const [isErrorSnackbarOpen, setIsErrorSnackbarOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -78,8 +78,9 @@ function Home() {
     game.isActive = true;
     game.player1.id = currentUser.id;
     game.player1.name = currentUser.name;
-    GameDataService.createGame(game);
-    loadGame(game);
+    GameDataService.createGame(game).then(() => {
+      loadGame(game);
+    });
   };
 
   return (

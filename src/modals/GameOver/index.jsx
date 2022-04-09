@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import React from "react";
 
+import { LOST, TIE, WON } from "../../constants/GameResults";
 import * as styles from "./css/index.module.css";
 
 const style = {
@@ -14,10 +15,6 @@ const style = {
 };
 
 const GameOverModal = ({ isOpen, newGame, endGame, gameResult }) => {
-  const TIE = "tie";
-  const WON = "won";
-  const LOST = "lost";
-
   const getModalMessage = () => {
     if (gameResult === TIE) {
       return "You tied.";

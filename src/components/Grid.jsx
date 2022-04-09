@@ -1,18 +1,16 @@
 import React, { useState } from "react";
 
+import { EMPTY, PLAYER1 } from "../constants/Players";
 import * as GameDataService from "../services/game.service";
 import ErrorSnackbar from "../snackbars/Error";
 import useStore from "../Store";
 import * as styles from "./css/Grid.module.css";
 
 function Grid({ gridNumber, gridState, game, handlePlay }) {
-  const EMPTY = "empty";
-  const PLAYER1 = "player1";
-
   const currentGameId = useStore((state) => state.currentGameId);
   const currentUser = useStore((state) => state.currentUser);
-  const [isErrorSnackbarOpen, setIsErrorSnackbarOpen] = useState(false);
   const [errorSnackbarMessage, setErrorSnackbarMessage] = useState("");
+  const [isErrorSnackbarOpen, setIsErrorSnackbarOpen] = useState(false);
 
   // Check if it is the logged in user's turn
   const isUsersTurn = () => {

@@ -20,7 +20,7 @@ function Login() {
   const onSuccess = (res) => {
     let profile = res.profileObj;
     let user = createUserFromGoogleProfile(profile);
-    UserDataService.patchUser(user);
+    UserDataService.putUser(user);
     setCurrentUser(user);
   };
 

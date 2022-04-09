@@ -3,7 +3,7 @@ import { child, get, ref, set, update } from "firebase/database";
 import { database } from "../firebase";
 
 export function createGame(game) {
-  get(child(ref(database), `games/${game.id}`))
+  return get(child(ref(database), `games/${game.id}`))
     .then((snapshot) => {
       if (snapshot.exists()) {
         return "Game already exists";

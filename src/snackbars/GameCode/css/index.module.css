@@ -1,8 +1,9 @@
 .snackbar {
+  height: 10vh;
   position: absolute;
-  top: 8vh;
+  top: 0;
   left: 50%;
-  transform: translate(-50%, 0);
+  transform: translate(-50%, 50%);
 }
 
 .snackbar > div {
