@@ -27,23 +27,32 @@ function Board() {
   const [isGameOverModalOpen, setIsGameOverModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  // TODO: Update users screen if other player wins
   // TODO: Debug why "isGameOverModalOpen" is always false
   useEffect(() => {
     const gameRef = ref(database, "games/" + currentGameId);
     onValue(gameRef, (snapshot) => {
       if (snapshot.exists()) {
         let data = snapshot.val();
-        setGame(data);
+        if (data.winner !== undefined) {
+          const result =
+            data.winner === TIE
+              ? TIE
+              : data.winner === currentUser.id
+              ? WON
+              : LOST;
+          setGameResult(result);
+          setIsGameOverModalOpen(true);
+        } else {
+          setGame(data);
+        }
       } else if (!isGameOverModalOpen) {
         console.log(!isGameOverModalOpen);
         setErrorSnackbarMessage("Error loading game");
         setIsErrorSnackbarOpen(true);
       }
     });
-  }, [currentGameId, isGameOverModalOpen]);
+  }, [currentGameId, currentUser, isGameOverModalOpen]);
 
-  // Update which players turn it is
   const updatePlayerTurn = () => {
     let newPlayer = null;
     if (game.currentPlayer === PLAYER1) {
@@ -60,8 +69,7 @@ function Board() {
     GameDataService.patchGame(updatedGame);
   };
 
-  // Return winner if one exists
-  const getWinner = () => {
+  const calculateWinner = () => {
     // Check horizontals
     for (let row in game.board) {
       let set = new Set(game.board[row]);
@@ -104,29 +112,6 @@ function Board() {
     return TIE;
   };
 
-  // Check if the logged in user won
-  const didUserWin = () => {
-    const winner = getWinner();
-    if (winner === TIE) {
-      handleGameOver(TIE);
-      return;
-    }
-    if (winner === PLAYER1) {
-      if (game.player1.id === currentUser.id) {
-        handleGameOver(WON);
-      } else {
-        handleGameOver(LOST);
-      }
-    }
-    if (winner === PLAYER2) {
-      if (game.player2.id === currentUser.id) {
-        handleGameOver(WON);
-      } else {
-        handleGameOver(LOST);
-      }
-    }
-  };
-
   const handleGameOver = (gameResult) => {
     let updatedGame = null;
     const winner =
@@ -148,17 +133,40 @@ function Board() {
     setIsGameOverModalOpen(true);
   };
 
+  const didCurrentUserWin = () => {
+    const winner = calculateWinner();
+    if (winner === TIE) {
+      handleGameOver(TIE);
+      return;
+    }
+    if (winner === PLAYER1) {
+      if (game.player1.id === currentUser.id) {
+        handleGameOver(WON);
+      } else {
+        handleGameOver(LOST);
+      }
+    }
+    if (winner === PLAYER2) {
+      if (game.player2.id === currentUser.id) {
+        handleGameOver(WON);
+      } else {
+        handleGameOver(LOST);
+      }
+    }
+  };
+
   const handlePlay = () => {
     if (game.isActive) {
       updatePlayerTurn();
     }
-    didUserWin();
+    didCurrentUserWin();
   };
 
   const handleNewGame = () => {
     let updatedGame = game;
-    updatedGame.isActive = true;
     updatedGame.board = new GameBoard().board;
+    updatedGame.isActive = true;
+    updatedGame.winner = null;
     GameDataService.patchGame(updatedGame);
     setIsGameOverModalOpen(false);
     setGameResult("");

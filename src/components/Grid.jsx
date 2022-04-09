@@ -38,7 +38,9 @@ function Grid({ gridNumber, gridState, game, handlePlay }) {
       GameDataService.patchGame(updatedGame);
     }
   };
+
   const handleClick = () => {
+    console.log(game);
     if (isUsersTurn()) {
       markGrid(gridNumber);
       handlePlay();

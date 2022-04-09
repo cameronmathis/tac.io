@@ -1,6 +1,6 @@
 .box {
   width: 500px;
-  background-color: var(--clr-background);
+  background-color: rgba(150, 150, 150, 0.9);
   border-radius: 10px;
   border: 2px solid var(--clr-dark);
 }
