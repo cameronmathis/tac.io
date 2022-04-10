@@ -21,13 +21,13 @@ function Board() {
   const currentUser = useStore((state) => state.currentUser);
   const setCurrentPath = useStore((state) => state.setCurrentPath);
   const [game, setGame] = useState(new Game());
+  const [isGameFound, setIsGameFound] = useState(true);
   const [errorSnackbarMessage, setErrorSnackbarMessage] = useState("");
   const [isErrorSnackbarOpen, setIsErrorSnackbarOpen] = useState(false);
   const [gameResult, setGameResult] = useState("");
   const [isGameOverModalOpen, setIsGameOverModalOpen] = useState(false);
   const navigate = useNavigate();
 
-  // TODO: Debug why "isGameOverModalOpen" is always false
   useEffect(() => {
     const gameRef = ref(database, "games/" + currentGameId);
     onValue(gameRef, (snapshot) => {
@@ -45,13 +45,19 @@ function Board() {
         } else {
           setGame(data);
         }
-      } else if (!isGameOverModalOpen) {
-        console.log(!isGameOverModalOpen);
-        setErrorSnackbarMessage("Error loading game");
-        setIsErrorSnackbarOpen(true);
+        setIsGameFound(true);
+      } else {
+        setIsGameFound(false);
       }
     });
-  }, [currentGameId, currentUser, isGameOverModalOpen]);
+  }, [currentGameId, currentUser]);
+
+  useEffect(() => {
+    if (!isGameFound && !isGameOverModalOpen) {
+      setErrorSnackbarMessage("Error loading game");
+      setIsErrorSnackbarOpen(true);
+    }
+  }, [isGameFound, isGameOverModalOpen]);
 
   const updatePlayerTurn = () => {
     let newPlayer = null;
@@ -168,6 +174,7 @@ function Board() {
     updatedGame.isActive = true;
     updatedGame.winner = null;
     GameDataService.patchGame(updatedGame);
+    setIsGameFound(true);
     setIsGameOverModalOpen(false);
     setGameResult("");
   };

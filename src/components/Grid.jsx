@@ -40,7 +40,6 @@ function Grid({ gridNumber, gridState, game, handlePlay }) {
   };
 
   const handleClick = () => {
-    console.log(game);
     if (isUsersTurn()) {
       markGrid(gridNumber);
       handlePlay();
