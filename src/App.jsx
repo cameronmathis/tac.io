@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import { HashRouter as Router } from "react-router-dom";
 
 import Body from "./components/Body";
@@ -11,7 +11,10 @@ function App() {
   const setIsMobile = useStore((state) => state.setIsMobile);
   const [showFooter, setShowFooter] = useState(true);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    setIsMobile(window.innerWidth < 765);
+    setShowFooter(window.innerHeight > 750);
+    // listen for resizing
     window.addEventListener("resize", () =>
       setIsMobile(window.innerWidth < 765)
     );
