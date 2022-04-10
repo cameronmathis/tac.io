@@ -59,7 +59,7 @@ The app is live! Open [http://cameronmathis.github.io/tac.io](http://cameronmath
 ## Status
 
 Version: 1.0.1 </br>
-Project is: _in progress_
+Project is: _finished_
 
 ## Contact
 
