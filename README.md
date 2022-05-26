@@ -6,7 +6,7 @@
 
 # tac.io
 
-This is a Full Stack Multiplayer Tic Tac Toe Web Application.
+This is a Full Stack Real-Time Multiplayer Tic Tac Toe Web Application.
 
 ## Table of contents
 
