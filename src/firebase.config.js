@@ -1,10 +1,10 @@
 export const firebaseConfig = {
-  apiKey: "AIzaSyBlozCM8uRov_73nBj-fk5VF70h0Ysr060",
-  authDomain: "tacio-clmat.firebaseapp.com",
-  databaseURL: "https://tacio-clmat-default-rtdb.firebaseio.com",
-  projectId: "tacio-clmat",
-  storageBucket: "tacio-clmat.appspot.com",
-  messagingSenderId: "3090956232",
-  appId: "1:3090956232:web:777eeb27c7610d47798afd",
-  measurementId: "G-JE4QX5ZD7X",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
